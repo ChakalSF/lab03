@@ -1,5 +1,6 @@
 
-                                                        // Вариант 18 Чакал Семён А-03-20
+ #include "histogram.h"
+                           // Вариант 18 Чакал Семён А-03-20
 #include <iostream>
 
 #include <vector>
@@ -167,19 +168,6 @@ void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,
             return(Numbers);
  }
 
-
-  double find_minmax(double &min,double &max, const vector <double> &a, size_t numberCount )
-  { min =a[1];
-  max=a[1];
-      for (int i=0;i<numberCount;i++)
-      {
-      if (a[i]>max)
-        max=a[i];
-        if (a[i]<min)
-            min=a[i];
-
-      }
-  }
 
 int main()
 
