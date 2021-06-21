@@ -99,19 +99,19 @@ void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,
 
 }
 
- vector <double> input_numbers(size_t numberCount)
+ vector <double> input_numbers( istream& in,size_t numberCount)
  {
      vector <double> Numbers(numberCount);
 
      for(int i=0;i<numberCount;i++)
-        cin>>Numbers[i];
+        in>>Numbers[i];
             return(Numbers);
  }
 
 
 int main()
 
-{
+{ setlocale(LC_ALL,"russian");
 
     const size_t SCREEN_WIDTH = 80;
 
@@ -132,14 +132,13 @@ int main()
     cin>>numberCount;
 
 
-    const auto vec= input_numbers(numberCount);
+    const auto vec= input_numbers(cin,numberCount);
   double min,max;
      find_minmax(min,max,vec,numberCount);
 
     cerr << "binCount=" << endl;
 
     cin>>bin_Count;
-
 
 
     vector <size_t>bins(bin_Count);
@@ -150,10 +149,19 @@ int main()
 
     bin_Size = (max - min) / bin_Count;
 
+
     make_histogramm(bin_Size,bin_Count,bins,numberCount,min,max,vec);
+ double max1=bins[0];
+
+    for ( size_t k:bins)
+        {
 
 
-   show_histogram_svg(bins,max, MAX_ASTERISK);
+        if (k>max1)
+            max1=k;
+        }
+
+   show_histogram_svg(bins,max1, MAX_ASTERISK);
 
 
     return 0;
