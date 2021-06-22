@@ -16,10 +16,7 @@ using namespace std;
 
 
 
-struct Input {
-    vector<double> numbers;
-    size_t bin_count;
-};
+
 
 vector <double> input_numbers( istream& in,size_t numberCount)
  {
@@ -98,17 +95,21 @@ void show_histogramm_txt(vector <size_t>bins,double bin_Count,double high,const 
     }
 }
 
-void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,double min,double max,const auto  vec )
+void make_histogramm ( float bin_Size, vector  <size_t> &bins,double min,double max,Input name)
 {
    bool flag;
 
-    for (int i = 0; i < vec.size(); i++)
+    for (int i = 0; i < name.bin_count; i++)
+
+        bins[i] = 0;
+
+    for (int i = 0; i < name.numbers.size(); i++)
 
     {
 
         flag = false;
 
-        for (int j = 0; (j < bin_Count - 1) && !flag; j++)
+        for (int j = 0; (j < name.bin_count - 1) && !flag; j++)
 
         {
 
@@ -118,7 +119,7 @@ void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,
 
 
 
-            if (vec[i] >= lo && vec[i] < hi)
+            if (name.numbers[i] >= lo && name.numbers[i] < hi)
 
             {
                 bins[j]++;
@@ -132,7 +133,7 @@ void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,
         {
             flag = true;
 
-            bins[bin_Count - 1]++;
+            bins[name.bin_count - 1]++;
         }
 
 }
@@ -150,15 +151,10 @@ int main()
     const size_t SCREEN_WIDTH = 80;
 
     const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
-
-    size_t numberCount,bin_Count;
-
     float bin_Size;
-
-    bool flag = true;
-
     char star='*';
 
+    bool flag = true;
     double high=0;
     double max1;
 
@@ -169,14 +165,12 @@ int main()
      find_minmax(min,max,name.numbers);
     vector <size_t>bins(name.bin_count);
 
-    for (int i = 0; i < name.bin_count; i++)
 
-        bins[i] = 0;
 
     bin_Size = (max - min) / name.bin_count;
 
 
-    make_histogramm(bin_Size,name.bin_count,bins,min,max,name.numbers);
+    make_histogramm(bin_Size,bins,min,max,name);
     findmax(bins,max1);
     show_histogram_svg(bins,max1, MAX_ASTERISK);
    return 0;
