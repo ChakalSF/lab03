@@ -13,7 +13,11 @@
 
 using namespace std;
 
+const size_t SCREEN_WIDTH = 80;
 
+    const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
+     char star='*';
+     double high=0;
 
 
 
@@ -28,31 +32,25 @@ vector <double> input_numbers( istream& in,size_t numberCount)
  }
 
 
-Input read_input(istream& in)
+Input read_input(istream& in,bool promt)
 {
      Input data;
+     if (promt)
      cerr << "Enter number count: ";
      size_t number_count;
     in >> number_count;
+    if (promt)
      cerr << "Enter numbers: ";
 
      data.numbers=input_numbers(in,number_count);
+     if(promt)
      cerr<< endl<<"Enter bin_count ";
      in>>data.bin_count;
      return data;
 }
 
 
-void findmax(vector <size_t> &bins,double &max1)
-{
 
-    for ( size_t k:bins)
-        {
-            if (k>max1)
-            max1=k;
-        }
-       return;
-}
 
 
 void show_histogramm_txt(vector <size_t>bins,double bin_Count,double high,const size_t MAX_ASTERISK ,char star)
@@ -95,10 +93,16 @@ void show_histogramm_txt(vector <size_t>bins,double bin_Count,double high,const 
     }
 }
 
-void make_histogramm ( float bin_Size, vector  <size_t> &bins,double min,double max,Input name)
-{
-   bool flag;
+  vector <size_t> make_histogramm ( Input name)
 
+{ double min;
+  double max;
+  find_minmax(min,max,name.numbers);
+double bin_Size = (max - min) / name.bin_count;
+
+
+   bool flag;
+ vector <size_t> bins(name.bin_count);
     for (int i = 0; i < name.bin_count; i++)
 
         bins[i] = 0;
@@ -137,7 +141,7 @@ void make_histogramm ( float bin_Size, vector  <size_t> &bins,double min,double 
         }
 
 }
- return;
+ return(bins);
 
 }
 
@@ -146,33 +150,11 @@ void make_histogramm ( float bin_Size, vector  <size_t> &bins,double min,double 
 
 int main()
 
-{ setlocale(LC_ALL,"russian");
-
-    const size_t SCREEN_WIDTH = 80;
-
-    const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
-    float bin_Size;
-    char star='*';
-
-    bool flag = true;
-    double high=0;
-    double max1;
-
-    Input name;
-    name=read_input(cin);
-
-  double min,max;
-     find_minmax(min,max,name.numbers);
-    vector <size_t>bins(name.bin_count);
-
-
-
-    bin_Size = (max - min) / name.bin_count;
-
-
-    make_histogramm(bin_Size,bins,min,max,name);
-    findmax(bins,max1);
-    show_histogram_svg(bins,max1, MAX_ASTERISK);
+{
+     Input name=read_input(cin,true);
+       const vector <size_t>bins= make_histogramm(name);
+     double max1=bins[0];
+    show_histogram_svg(bins);
    return 0;
 
 }

@@ -6,6 +6,7 @@
 
 
 
+
 void
 svg_begin(double width, double height) {
     cout << "<?xml version='1.0' encoding='UTF-8'?>\n";
@@ -31,8 +32,13 @@ void svg_rect(double x, double y, double width, double height,string stroke, str
 
 }
 
+
+
+
 void
-show_histogram_svg(const vector<size_t>& bins,double max,const size_t MAX_ASTERISK) {
+show_histogram_svg( const vector<size_t>& bins) {
+    const size_t SCREEN_WIDTH = 80;
+    const size_t MAX_ASTERISK = SCREEN_WIDTH - 3 - 1;
     const auto IMAGE_WIDTH = 400;
 const auto IMAGE_HEIGHT = 300;
 const auto TEXT_LEFT = 20;
@@ -46,14 +52,14 @@ string type;
          {
 
 
-       cerr<<endl<<"введите оформление текста(none,underline ,overline,line-through) ";
+       cerr<<endl<<"Choose type of the text (none,underline ,overline,line-through) ";
          cin>>type;
       if((type== "none")|| (type== "underline") || (type== "overline") || (type=="line-through"))
        {
           flag1=true;
        }
        else {
-            cout<<"введите оформление текста повторно ";
+            cout<<"Choose type of the text correctly ";
            cin>>type;
             }
          }
@@ -64,6 +70,14 @@ string type;
     //  svg_rect(TEXT_WIDTH,0,bins[0]*BLOCK_WIDTH,BIN_HEIGHT,"red","red");
 
       double top = 0;
+      double max=bins[0];
+
+       for ( size_t k:bins)
+        {
+            if (k>max)
+            max=k;
+        }
+
       if (max<=MAX_ASTERISK)
 for (size_t bin : bins)
 

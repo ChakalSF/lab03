@@ -21,3 +21,4 @@ void find_minmax(double &min,double &max, const vector <double> &a )
       return;
 
   }
+
