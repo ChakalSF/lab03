@@ -3,11 +3,14 @@
 #include <iostream>
 
 
-void find_minmax(double &min,double &max, const vector <double> &a, size_t numberCount )
+void find_minmax(double &min,double &max, const vector <double> &a )
+  { if (a.size()==0)
   {
+    return;
+  }
        min =a[0];
   max=a[0];
-      for (int i=0;i<numberCount;i++)
+      for (int i=0;i<a.size();i++)
       {
       if (a[i]>max)
         max=a[i];

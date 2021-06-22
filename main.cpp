@@ -16,6 +16,47 @@ using namespace std;
 
 
 
+struct Input {
+    vector<double> numbers;
+    size_t bin_count;
+};
+
+vector <double> input_numbers( istream& in,size_t numberCount)
+ {
+     vector <double> Numbers(numberCount);
+
+     for(int i=0;i<numberCount;i++)
+        in>>Numbers[i];
+            return(Numbers);
+ }
+
+
+Input read_input(istream& in)
+{
+     Input data;
+     cerr << "Enter number count: ";
+     size_t number_count;
+    in >> number_count;
+     cerr << "Enter numbers: ";
+
+     data.numbers=input_numbers(in,number_count);
+     cerr<< endl<<"Enter bin_count ";
+     in>>data.bin_count;
+     return data;
+}
+
+
+void findmax(vector <size_t> &bins,double &max1)
+{
+
+    for ( size_t k:bins)
+        {
+            if (k>max1)
+            max1=k;
+        }
+       return;
+}
+
 
 void show_histogramm_txt(vector <size_t>bins,double bin_Count,double high,const size_t MAX_ASTERISK ,char star)
 {
@@ -57,11 +98,11 @@ void show_histogramm_txt(vector <size_t>bins,double bin_Count,double high,const 
     }
 }
 
-void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,size_t numberCount,double min,double maxm,const auto  vec )
+void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,double min,double max,const auto  vec )
 {
    bool flag;
 
-    for (int i = 0; i < numberCount; i++)
+    for (int i = 0; i < vec.size(); i++)
 
     {
 
@@ -99,14 +140,7 @@ void make_histogramm ( float bin_Size, double bin_Count, vector  <size_t> &bins,
 
 }
 
- vector <double> input_numbers( istream& in,size_t numberCount)
- {
-     vector <double> Numbers(numberCount);
 
-     for(int i=0;i<numberCount;i++)
-        in>>Numbers[i];
-            return(Numbers);
- }
 
 
 int main()
@@ -126,44 +160,25 @@ int main()
     char star='*';
 
     double high=0;
+    double max1;
 
-    cerr << "numberCount=";
+    Input name;
+    name=read_input(cin);
 
-    cin>>numberCount;
-
-
-    const auto vec= input_numbers(cin,numberCount);
   double min,max;
-     find_minmax(min,max,vec,numberCount);
+     find_minmax(min,max,name.numbers);
+    vector <size_t>bins(name.bin_count);
 
-    cerr << "binCount=" << endl;
-
-    cin>>bin_Count;
-
-
-    vector <size_t>bins(bin_Count);
-
-    for (int i = 0; i < bin_Count; i++)
+    for (int i = 0; i < name.bin_count; i++)
 
         bins[i] = 0;
 
-    bin_Size = (max - min) / bin_Count;
+    bin_Size = (max - min) / name.bin_count;
 
 
-    make_histogramm(bin_Size,bin_Count,bins,numberCount,min,max,vec);
- double max1=bins[0];
-
-    for ( size_t k:bins)
-        {
-
-
-        if (k>max1)
-            max1=k;
-        }
-
-   show_histogram_svg(bins,max1, MAX_ASTERISK);
-
-
-    return 0;
+    make_histogramm(bin_Size,name.bin_count,bins,min,max,name.numbers);
+    findmax(bins,max1);
+    show_histogram_svg(bins,max1, MAX_ASTERISK);
+   return 0;
 
 }
