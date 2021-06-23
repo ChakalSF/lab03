@@ -35,8 +35,8 @@ assert(max == -1);
 void
 test_positive() {
 
-    double min = 0;
-    double max = 0;
+    double min = 1;
+    double max = 1;
 
 
 
@@ -53,9 +53,9 @@ void test_alone()
 
 {
 
-double min = 0;
+double min = 2;
 
-double max = 0;
+double max = 2;
 
 find_minmax( min, max,{1},1);
 
@@ -75,9 +75,9 @@ double max = 0;
 
 find_minmax( min, max,{},0);
 
-assert(min == 1);
+assert(min == 0);
 
-assert(max == 2);
+assert(max == 0);
 
 }
 int

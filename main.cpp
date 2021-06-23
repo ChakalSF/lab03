@@ -4,7 +4,7 @@
 #include <iostream>
 #include "svg.h"
 #include <vector>
-
+ #include <curl/curl.h>
 #include <conio.h>
 
 #include <iomanip>
@@ -151,9 +151,10 @@ double bin_Size = (max - min) / name.bin_count;
 int main()
 
 {
+
+      curl_global_init(CURL_GLOBAL_ALL);
      Input name=read_input(cin,true);
        const vector <size_t>bins= make_histogramm(name);
-     double max1=bins[0];
     show_histogram_svg(bins);
    return 0;
 
