@@ -158,6 +158,18 @@ if(curl)
   CURLcode res;
   curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
   res = curl_easy_perform(curl);
+  if (curl_easy_perform(curl)==0)
+  {
+   cerr<<res;
+    exit(0);
+  }
+
+  if (curl_easy_perform(curl)!=0)
+  {
+   cerr<<res;
+    exit(1);
+  }
+
   cerr<<res;
   cerr<<endl<<curl;
   curl_easy_cleanup(curl);
