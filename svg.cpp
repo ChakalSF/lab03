@@ -48,18 +48,19 @@ const auto BIN_HEIGHT = 30;
 const auto BLOCK_WIDTH = 10;
 string type;
   bool flag1=false;
+  cerr<<endl<<"Choose type of the text (none,underline ,overline,line-through) ";
+         cin>>type;
          while (flag1==false)
          {
 
 
-       cerr<<endl<<"Choose type of the text (none,underline ,overline,line-through) ";
-         cin>>type;
+
       if((type== "none")|| (type== "underline") || (type== "overline") || (type=="line-through"))
        {
           flag1=true;
        }
        else {
-            cout<<"Choose type of the text correctly ";
+            cerr<<"Choose type of the text correctly ";
            cin>>type;
             }
          }

@@ -6,7 +6,8 @@
 #include <vector>
  #include <curl/curl.h>
 #include <conio.h>
-
+#include <sstream>
+#include <string>
 #include <iomanip>
 #include <string>
 
@@ -21,6 +22,25 @@ const size_t SCREEN_WIDTH = 80;
 
 
 
+void find_time()
+{ cerr<<"Enter name adress";
+string url;
+     curl_global_init(CURL_GLOBAL_ALL);
+        CURL *curl = curl_easy_init();
+if(curl) {
+  double namelookup;
+  curl_easy_setopt(curl, CURLOPT_URL, url);
+   CURLcode res = curl_easy_perform(curl);
+  if(CURLE_OK == res) {
+    res = curl_easy_getinfo(curl, CURLINFO_NAMELOOKUP_TIME, &namelookup);
+    if(CURLE_OK == res) {
+      printf("Time: %.1f", namelookup);
+    }
+  }
+  curl_easy_cleanup(curl);
+}
+return;
+}
 
 vector <double> input_numbers( istream& in,size_t numberCount)
  {
@@ -46,9 +66,46 @@ Input read_input(istream& in,bool promt)
      if(promt)
      cerr<< endl<<"Enter bin_count ";
      in>>data.bin_count;
-     return data;
+     return (data);
 }
 
+size_t
+write_data(void* items, size_t item_size, size_t item_count, void* ctx)
+{
+    size_t data_size = item_count*item_size;
+    stringstream* buffer = reinterpret_cast<stringstream*>(ctx);
+    const char* items_2 = reinterpret_cast<const char*>(items);
+    buffer->write(items_2, data_size);
+
+    return(data_size);
+}
+
+
+     Input
+download(const string& address)
+ {
+    stringstream buffer;
+     curl_global_init(CURL_GLOBAL_ALL);
+        CURL *curl = curl_easy_init();
+        if(curl)
+    {
+  CURLcode res;
+  curl_easy_setopt(curl, CURLOPT_WRITEFUNCTION, write_data);
+  curl_easy_setopt(curl, CURLOPT_WRITEDATA, &buffer);
+ curl_easy_setopt(curl, CURLOPT_URL, address.c_str());
+  res = curl_easy_perform(curl);
+
+  if (res!=0)
+  {
+   cerr<<curl_easy_strerror(res);
+    exit(1);
+  }
+
+
+  curl_easy_cleanup(curl);
+    }
+    return (read_input(buffer, false));
+}
 
 
 
@@ -149,38 +206,20 @@ double bin_Size = (max - min) / name.bin_count;
 
 
 int main(int argc, char* argv[])
-{
+{ Input name;
     if (argc>1)
-    {    curl_global_init(CURL_GLOBAL_ALL);
-        CURL *curl = curl_easy_init();
-if(curl)
     {
-  CURLcode res;
-  curl_easy_setopt(curl, CURLOPT_URL, argv[1]);
-  res = curl_easy_perform(curl);
-  if (curl_easy_perform(curl)==0)
-  {
-   cerr<<res;
-    exit(0);
-  }
-
-  if (curl_easy_perform(curl)!=0)
-  {
-   cerr<<res;
-    exit(1);
-  }
-
-  cerr<<res;
-  cerr<<endl<<curl;
-  curl_easy_cleanup(curl);
+       name = download(argv[1]);
     }
-        return(0);
+    else
+    {
+        name=read_input(cin,true);
     }
 
-
-     Input name=read_input(cin,true);
        const vector <size_t>bins= make_histogramm(name);
     show_histogram_svg(bins);
    return 0;
 
 }
+
+
