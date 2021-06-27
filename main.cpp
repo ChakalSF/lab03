@@ -20,39 +20,27 @@ const size_t SCREEN_WIDTH = 80;
      char star='*';
      double high=0;
 
-     string
-make_info_text() {
-    stringstream buffer;
-    // TODO: получить версию системы, записать в буфер.
-    // TODO: получить имя компьютера, записать в буфер.
-    return buffer.str();
-}
-
 
 
 void find_time()
-{ cerr<<"Enter name of server ";
+{ cerr<<"Enter name adress";
 string url;
-cin>>url;
      curl_global_init(CURL_GLOBAL_ALL);
         CURL *curl = curl_easy_init();
 if(curl) {
   double namelookup;
-  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
+  curl_easy_setopt(curl, CURLOPT_URL, url);
    CURLcode res = curl_easy_perform(curl);
-    if(CURLE_OK == res) {
+  if(CURLE_OK == res) {
     res = curl_easy_getinfo(curl, CURLINFO_NAMELOOKUP_TIME, &namelookup);
     if(CURLE_OK == res) {
-
       printf("Time: %.1f", namelookup);
-
     }
   }
   curl_easy_cleanup(curl);
 }
 return;
 }
-
 
 vector <double> input_numbers( istream& in,size_t numberCount)
  {
@@ -219,11 +207,6 @@ double bin_Size = (max - min) / name.bin_count;
 
 int main(int argc, char* argv[])
 { Input name;
-const char* Name = "Commander Shepard";
-int year = 2154;
-printf("%s was born in %d.\n", Name, year);
-printf("n = %08x\n", 0x1234567);
-return 0;
     if (argc>1)
     {
        name = download(argv[1]);
@@ -235,7 +218,6 @@ return 0;
 
        const vector <size_t>bins= make_histogramm(name);
     show_histogram_svg(bins);
-    find_time();
    return 0;
 
 }
