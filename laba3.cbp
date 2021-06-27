@@ -37,6 +37,9 @@
 			<Add library="libcurl.dll.a" />
 			<Add directory="C:/Users/serst/Desktop/laba3/curl/lib" />
 		</Linker>
+		<Unit filename="../laba1/histogramma.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="histogram.cpp" />
 		<Unit filename="histogram.h">
 			<Option target="&lt;{~None~}&gt;" />
