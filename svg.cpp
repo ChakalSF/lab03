@@ -5,9 +5,7 @@
 #include "svg.h"
 #include <windows.h>
 #include <sstream>
-
-
-
+#define INFO_BUFFER_SIZE 32767
 
 
 void
@@ -53,14 +51,13 @@ DWORD platform = info >> 16;
  {
       build = platform;
  }
- printf("%lu",build);
- cout<<endl;
- printf("%lu",version_major);
- printf(".%lu",version_minor);
- buffer << "Windows v" << version_major << "." << version_minor << "(" << platform << ")";
+   char infoBuf[INFO_BUFFER_SIZE];
+    DWORD bufCharCount = INFO_BUFFER_SIZE;
+    GetUserName(infoBuf, &bufCharCount);
+
+ buffer << "Windows v" << version_major << "." << version_minor << "(" << platform << ")"<<endl<<"ComputerName: "<<infoBuf;
  return(buffer.str());
 
-return 0;
 }
 
 
@@ -128,8 +125,6 @@ for (size_t bin : bins)
     top = top+ BIN_HEIGHT;
     }
      top=top+BIN_HEIGHT;
-     svg_text(TEXT_LEFT,top,make_info_text(),type);
-
-
+      svg_text(TEXT_LEFT,top,make_info_text(),type);
     svg_end();
 }

@@ -36,7 +36,8 @@ if(curl) {
   if(CURLE_OK == res) {
     res = curl_easy_getinfo(curl, CURLINFO_NAMELOOKUP_TIME, &namelookup);
     if(CURLE_OK == res) {
-      printf("Time: %.1f", namelookup);
+            cerr<<namelookup;
+      //printf("Time: %.1f", namelookup);
     }
   }
   curl_easy_cleanup(curl);
@@ -222,7 +223,8 @@ Input name;
 
        const vector <size_t>bins= make_histogramm(name);
     show_histogram_svg(bins);
-    find_time();
+     //find_time();
+    _getch();
    return 0;
 
 }
