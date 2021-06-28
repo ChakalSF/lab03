@@ -3,6 +3,9 @@
 #include <string>
 #include <cmath>
 #include "svg.h"
+#include <windows.h>
+#include <sstream>
+
 
 
 
@@ -31,7 +34,34 @@ void svg_rect(double x, double y, double width, double height,string stroke, str
    cout<<" <rect x= '"<<x<<"' y='"<<y<<"' width='"<<width<<"' height='"<<height<<"' stroke='"<<stroke<<"' fill='"<<fill<<"' />";
 
 }
+string make_info_text()
+{  stringstream buffer;
 
+DWORD info=GetVersion();
+DWORD mask = 0x0000ffff;
+DWORD version = info & mask;
+DWORD platform = info >> 16;
+ mask=0x000000ff;
+ DWORD version_major=version&mask;
+ DWORD version_minor =version >>8;
+ DWORD build=0;
+ if((info & 0x40000000)==0)
+ {
+     build = platform;
+ }
+ else
+ {
+      build = platform;
+ }
+ printf("%lu",build);
+ cout<<endl;
+ printf("%lu",version_major);
+ printf(".%lu",version_minor);
+ buffer << "Windows v" << version_major << "." << version_minor << "(" << platform << ")";
+ return(buffer.str());
+
+return 0;
+}
 
 
 
@@ -97,6 +127,8 @@ for (size_t bin : bins)
     svg_rect(TEXT_WIDTH, top, bin_width, BIN_HEIGHT,"green","black");
     top = top+ BIN_HEIGHT;
     }
+     top=top+BIN_HEIGHT;
+     svg_text(TEXT_LEFT,top,make_info_text(),type);
 
 
     svg_end();

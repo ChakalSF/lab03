@@ -10,6 +10,7 @@
 #include <string>
 #include <iomanip>
 #include <string>
+#include <windows.h>
 
 
 using namespace std;
@@ -23,13 +24,14 @@ const size_t SCREEN_WIDTH = 80;
 
 
 void find_time()
-{ cerr<<"Enter name adress";
+{ cerr<<"Enter name adress ";
 string url;
+cin>>url;
      curl_global_init(CURL_GLOBAL_ALL);
         CURL *curl = curl_easy_init();
 if(curl) {
   double namelookup;
-  curl_easy_setopt(curl, CURLOPT_URL, url);
+  curl_easy_setopt(curl, CURLOPT_URL, url.c_str());
    CURLcode res = curl_easy_perform(curl);
   if(CURLE_OK == res) {
     res = curl_easy_getinfo(curl, CURLINFO_NAMELOOKUP_TIME, &namelookup);
@@ -206,7 +208,9 @@ double bin_Size = (max - min) / name.bin_count;
 
 
 int main(int argc, char* argv[])
-{ Input name;
+{
+
+Input name;
     if (argc>1)
     {
        name = download(argv[1]);
@@ -218,6 +222,7 @@ int main(int argc, char* argv[])
 
        const vector <size_t>bins= make_histogramm(name);
     show_histogram_svg(bins);
+    find_time();
    return 0;
 
 }
